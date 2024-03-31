@@ -5,9 +5,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import Joi from '@hapi/joi';
+// import appConfig from './config/app.config';
 
 @Module({
   imports: [
+    // ConfigModule.forRoot({ load:[appConfig]})
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        PG_PASSWORD: Joi.string().required(),
+      }),
+    }),
     CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
