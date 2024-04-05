@@ -7,17 +7,18 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import Joi from '@hapi/joi';
+import appConfig from './config/app.config';
 // import appConfig from './config/app.config';
 
 @Module({
   imports: [
-    // ConfigModule.forRoot({ load:[appConfig]})
-    ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        PG_PASSWORD: Joi.string().required(),
-      }),
-    }),
-    CoffeesModule,
+    ConfigModule.forRoot({ load: [appConfig] }),
+    // ConfigModule.forRoot({
+    //   validationSchema: Joi.object({
+    //     PG_PASSWORD: Joi.string().required(),
+    //   }),
+    // }),
+
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -28,6 +29,7 @@ import Joi from '@hapi/joi';
       autoLoadEntities: true, // models will be loaded automatically
       synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
     }),
+    CoffeesModule,
     CommonModule,
   ],
   controllers: [AppController],
